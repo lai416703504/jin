@@ -1,17 +1,19 @@
 package middleware
 
 import (
-	"github.com/lai416703504/jin/framework"
+	"github.com/lai416703504/jin/framework/gin"
 	"log"
 	"strings"
 	"time"
 )
 
-func Cost() framework.ControllerHandler {
+func Cost() gin.HandlerFunc {
 	//使用回调函数
-	return func(ctx *framework.Context) error {
+	return func(ctx *gin.Context) {
 		//记录开始时间
 		start := time.Now()
+
+		log.Printf("api uri start: %v", ctx.Request.RequestURI)
 
 		//使用next执行具体的业务逻辑
 		ctx.Next()
@@ -21,11 +23,9 @@ func Cost() framework.ControllerHandler {
 		cost := end.Sub(start)
 		log.Printf(
 			"method: %v, api uri: %v, cost: %v s",
-			strings.ToUpper(ctx.GetRequest().Method),
-			ctx.GetRequest().RequestURI,
+			strings.ToUpper(ctx.Request.Method),
+			ctx.Request.RequestURI,
 			cost.Seconds(),
 		)
-
-		return nil
 	}
 }
