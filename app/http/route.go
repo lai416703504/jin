@@ -5,7 +5,7 @@ import (
 	"github.com/lai416703504/jin/framework/gin"
 )
 
-func Route(r *gin.Engine) {
+func Routes(r *gin.Engine) {
 	r.Static("/dist/", "./dist/")
 	demo.Register(r)
 }

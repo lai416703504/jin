@@ -38,7 +38,7 @@ func Register(r *gin.Engine) error {
 // @Router /demo/demo [get]
 func (api *DemoApi) Demo(ctx *gin.Context) {
 	appService := ctx.MustMake(contract.AppKey).(contract.App)
-	baseFolder := appService.BaseFloder()
+	baseFolder := appService.BaseFolder()
 
 	//users := api.service.GetUsers()
 	//usersDTO := UserModelsToUserDTOs(users)
