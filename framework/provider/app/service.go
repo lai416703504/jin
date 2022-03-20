@@ -13,6 +13,8 @@ type JinApp struct {
 	container  framework.Container //服务容器
 	baseFolder string              //基础路径
 	appId      string              // 表示当前这个app的唯一id, 可以用于分布式锁等
+
+	configMap map[string]string // 配置加载
 }
 
 func NewJinApp(param ...interface{}) (interface{}, error) {
@@ -91,4 +93,9 @@ func (j *JinApp) RuntimeFolder() string {
 
 func (j *JinApp) TestFolder() string {
 	return filepath.Join(j.BaseFolder(), "test")
+}
+
+// LoadAppConfig 加载配置map
+func (j *JinApp) LoadAppConfig(kv map[string]string) {
+	j.configMap = kv
 }

@@ -5,11 +5,14 @@ import (
 	JinHttp "github.com/lai416703504/jin/app/http"
 	"github.com/lai416703504/jin/framework"
 	"github.com/lai416703504/jin/framework/provider/app"
+	"github.com/lai416703504/jin/framework/provider/config"
 	"github.com/lai416703504/jin/framework/provider/distributed"
+	"github.com/lai416703504/jin/framework/provider/env"
 	"github.com/lai416703504/jin/framework/provider/kernel"
 )
 
 func main() {
+
 	// 初始化服务容器
 	container := framework.NewJinContainer()
 
@@ -17,13 +20,17 @@ func main() {
 	container.Bind(&app.JinAppProvider{})
 
 	// 后续初始化需要绑定的服务提供者...
+	container.Bind(&env.JinEnvProvider{})
+
 	container.Bind(&distributed.LocalDistributedProvider{})
+
+	container.Bind(&config.JinConfigProvider{})
 
 	//将 HTTP 引擎初始化,并且作为服务提供者绑定到服务容器中
 	if engine, err := JinHttp.NewHttpEngine(); err == nil {
 		container.Bind(&kernel.JinKernelProvider{HttpEngine: engine})
 	}
-
+	// 运行root命令
 	console.RunCommand(container)
 
 	//core := gin.New()

@@ -4,6 +4,7 @@ import (
 	demoService "github.com/lai416703504/jin/app/provider/demo"
 	"github.com/lai416703504/jin/framework/contract"
 	"github.com/lai416703504/jin/framework/gin"
+	"net/http"
 )
 
 // todo
@@ -37,13 +38,19 @@ func Register(r *gin.Engine) error {
 // @Success 200 array []UserDTO
 // @Router /demo/demo [get]
 func (api *DemoApi) Demo(ctx *gin.Context) {
-	appService := ctx.MustMake(contract.AppKey).(contract.App)
-	baseFolder := appService.BaseFolder()
+	//获取password
+	configService := ctx.MustMake(contract.ConfigKey).(contract.Config)
+	password := configService.GetString("database.mysql.password")
+	//打印出来
+	ctx.JSON(http.StatusOK, password)
+	//appService := ctx.MustMake(contract.AppKey).(contract.App)
+	//baseFolder := appService.BaseFolder()
+	//ctx.JSON(200, baseFolder)
 
 	//users := api.service.GetUsers()
 	//usersDTO := UserModelsToUserDTOs(users)
 	//c.JSON(200, usersDTO)
-	ctx.JSON(200, baseFolder)
+
 }
 
 // Demo godoc

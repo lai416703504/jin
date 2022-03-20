@@ -48,25 +48,31 @@ func NewJinContainer() *JinContainer {
 
 func (j *JinContainer) Bind(provider ServiceProvider) error {
 	j.lock.Lock()
-	defer j.lock.Unlock()
 
 	key := provider.Name()
 
 	j.providers[key] = provider
-
+	j.lock.Unlock()
 	// if provider is not defer
 	if provider.IsDefer() == false {
+
 		if err := provider.Boot(j); err != nil {
 			return err
 		}
+
 		//实例化方法
 		params := provider.Params(j)
+
 		method := provider.Register(j)
+
 		instance, err := method(params...)
+
 		if err != nil {
 			return err
 		}
+
 		j.instances[key] = instance
+
 	}
 
 	return nil
@@ -94,7 +100,7 @@ func (j *JinContainer) MustMake(key string) interface{} {
 	serv, err := j.make(key, nil, false)
 
 	if err != nil {
-		panic(err)
+		panic("container not contain key " + key)
 	}
 
 	return serv

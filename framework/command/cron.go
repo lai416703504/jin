@@ -71,7 +71,7 @@ var cronStartCommand = &cobra.Command{
 		serverPidFile := filepath.Join(pidFolder, "cron.pid")
 		logFolder := appService.LogFolder()
 		serverLogFile := filepath.Join(logFolder, "cron.log")
-		currentFolder := appService.BaseFolder()
+		currentFolder := util.GetExecDirectory()
 
 		// deamon 模式
 		if cronDaemon {
